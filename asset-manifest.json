@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/frazilapp/static/css/main.a0abb6f0.chunk.css",
+    "main.js": "/frazilapp/static/js/main.792f3eda.chunk.js",
+    "main.js.map": "/frazilapp/static/js/main.792f3eda.chunk.js.map",
+    "runtime~main.js": "/frazilapp/static/js/runtime~main.176bb93e.js",
+    "runtime~main.js.map": "/frazilapp/static/js/runtime~main.176bb93e.js.map",
+    "static/js/2.80b114f2.chunk.js": "/frazilapp/static/js/2.80b114f2.chunk.js",
+    "static/js/2.80b114f2.chunk.js.map": "/frazilapp/static/js/2.80b114f2.chunk.js.map",
+    "index.html": "/frazilapp/index.html",
+    "precache-manifest.ec611d865dcff412548b33f12f1488f5.js": "/frazilapp/precache-manifest.ec611d865dcff412548b33f12f1488f5.js",
+    "service-worker.js": "/frazilapp/service-worker.js",
+    "static/css/main.a0abb6f0.chunk.css.map": "/frazilapp/static/css/main.a0abb6f0.chunk.css.map"
+  }
+}
