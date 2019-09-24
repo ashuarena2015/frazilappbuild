@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6286adb05eca610d36496c41be467acd",
+    "revision": "201cafb8b1a7da3e64d201eae4e1599c",
     "url": "/frazilapp/index.html"
   },
   {
-    "revision": "214eba46869637211147",
+    "revision": "295a5f451d380064bd2e",
     "url": "/frazilapp/static/css/main.a0abb6f0.chunk.css"
   },
   {
-    "revision": "773426a942ad526e9bc4",
-    "url": "/frazilapp/static/js/2.80b114f2.chunk.js"
+    "revision": "f0d350eb47b4ae48da97",
+    "url": "/frazilapp/static/js/2.8c4a1bbe.chunk.js"
   },
   {
-    "revision": "214eba46869637211147",
-    "url": "/frazilapp/static/js/main.792f3eda.chunk.js"
+    "revision": "295a5f451d380064bd2e",
+    "url": "/frazilapp/static/js/main.88b651bb.chunk.js"
   },
   {
     "revision": "7f30d97bc4dacb911771",
