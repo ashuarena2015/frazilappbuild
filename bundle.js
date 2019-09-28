@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a32cf15156378243c464"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "511cab8e144c1fd59fd1"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -621,7 +621,7 @@
 
 	var _Root2 = _interopRequireDefault(_Root);
 
-	__webpack_require__(535);
+	__webpack_require__(539);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43528,6 +43528,7 @@
 	  // Fetching
 	  FETCHING_START: 'FETCHING_START',
 	  FETCHING_STOP: 'FETCHING_STOP',
+	  FETCHING_FAILED: 'FETCHING_FAILED',
 
 	  // Verify OTP
 	  VERIFY_OTP_SUCCESS: 'VERIFY_OTP_SUCCESS',
@@ -43538,7 +43539,13 @@
 	  // Getting Projects
 	  FETCH_PROJECT_REQUEST: 'FETCH_PROJECT_REQUEST',
 	  FETCH_PROJECT_SUCCESS: 'FETCH_PROJECT_SUCCESS',
-	  FETCH_PROJECT_FAILED: 'FETCH_PROJECT_FAILED'
+	  FETCH_PROJECT_FAILED: 'FETCH_PROJECT_FAILED',
+
+	  // SAVE
+	  SAVE_SUCCESSFULLY: 'SAVE_SUCCESSFULLY',
+
+	  // Project Checklists
+	  PROJECT_CHECKLISTS: 'PROJECT_CHECKLISTS'
 
 	};
 
@@ -43561,7 +43568,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var initialState = {
-	  fetching: false
+	  fetching: false,
+	  saveDataSuccessFully: ''
 	};
 
 	var userProfile = function userProfile() {
@@ -43639,19 +43647,47 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
+	    case _ActionTypes2.default.FETCHING_START:
+	      return _extends({}, state, {
+	        fetching: true,
+	        saveDataSuccessFully: ''
+	      });
+	    case _ActionTypes2.default.FETCHING_STOP:
+	      return _extends({}, state, {
+	        fetching: false,
+	        saveDataSuccessFully: ''
+	      });
+	    case _ActionTypes2.default.FETCHING_FAILED:
+	      return _extends({}, state, {
+	        fetching: false,
+	        saveDataSuccessFully: ''
+	      });
 	    case _ActionTypes2.default.FETCH_PROJECT_REQUEST:
 	      return _extends({}, state, {
-	        fetching: true
+	        fetching: true,
+	        saveDataSuccessFully: ''
 	      });
 	    case _ActionTypes2.default.FETCH_PROJECT_SUCCESS:
 	      return _extends({}, state, {
 	        fetching: false,
-	        frazilProjects: action.response
+	        frazilProjects: action.response,
+	        saveDataSuccessFully: ''
 	      });
 	    case _ActionTypes2.default.FETCH_PROJECT_FAILED:
 	      return _extends({}, state, {
 	        fetching: false,
-	        gettingProjectsFailed: true
+	        gettingProjectsFailed: true,
+	        saveDataSuccessFully: ''
+	      });
+	    case _ActionTypes2.default.SAVE_SUCCESSFULLY:
+	      return _extends({}, state, {
+	        fetching: false,
+	        saveDataSuccessFully: action.response
+	      });
+	    case _ActionTypes2.default.PROJECT_CHECKLISTS:
+	      return _extends({}, state, {
+	        fetching: false,
+	        projectChecklists: action.response
 	      });
 	    default:
 	      return state;
@@ -43704,6 +43740,14 @@
 
 	var _AddChecklists2 = _interopRequireDefault(_AddChecklists);
 
+	var _AddProject = __webpack_require__(535);
+
+	var _AddProject2 = _interopRequireDefault(_AddProject);
+
+	var _SeeChecklists = __webpack_require__(537);
+
+	var _SeeChecklists2 = _interopRequireDefault(_SeeChecklists);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Root = function Root() {
@@ -43738,6 +43782,16 @@
 					exact: true,
 					path: '/add-checklists',
 					component: _AddChecklists2.default
+				}),
+				_react2.default.createElement(_reactRouterDom.Route, {
+					exact: true,
+					path: '/add-project',
+					component: _AddProject2.default
+				}),
+				_react2.default.createElement(_reactRouterDom.Route, {
+					exact: true,
+					path: '/see-checklists',
+					component: _SeeChecklists2.default
 				})
 			)
 		);
@@ -54216,7 +54270,7 @@
 /* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
+	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -54242,6 +54296,10 @@
 
 	var _reactRouterDom = __webpack_require__(225);
 
+	var _history = __webpack_require__(247);
+
+	var _history2 = _interopRequireDefault(_history);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54252,19 +54310,19 @@
 
 	var _components = {
 		SideMenu: {
-			displayName: "SideMenu"
+			displayName: 'SideMenu'
 		}
 	};
 
 	var _ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformHmrLibIndexJs2 = (0, _index6.default)({
-		filename: "/Applications/MAMP/htdocs/frazilapp/src/SideMenu/SideMenu.jsx",
+		filename: '/Applications/MAMP/htdocs/frazilapp/src/SideMenu/SideMenu.jsx',
 		components: _components,
 		locals: [module],
 		imports: [_react3.default]
 	});
 
 	var _ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformCatchErrorsLibIndexJs2 = (0, _index4.default)({
-		filename: "/Applications/MAMP/htdocs/frazilapp/src/SideMenu/SideMenu.jsx",
+		filename: '/Applications/MAMP/htdocs/frazilapp/src/SideMenu/SideMenu.jsx',
 		components: _components,
 		locals: [],
 		imports: [_react3.default, _index2.default]
@@ -54276,7 +54334,7 @@
 		};
 	}
 
-	var SideMenu = _wrapComponent("SideMenu")(function (_Component) {
+	var SideMenu = _wrapComponent('SideMenu')(function (_Component) {
 		_inherits(SideMenu, _Component);
 
 		function SideMenu(props) {
@@ -54292,79 +54350,106 @@
 		}
 
 		_createClass(SideMenu, [{
-			key: "openSideMenu",
+			key: 'openSideMenu',
 			value: function openSideMenu() {
 				this.setState({
 					sideMenuOpen: !this.state.sideMenuOpen
 				});
 			}
 		}, {
-			key: "render",
+			key: 'render',
 			value: function render() {
 				var _props$loginInfo = this.props.loginInfo,
 				    loginEmail = _props$loginInfo.loginEmail,
-				    role = _props$loginInfo.role;
+				    role = _props$loginInfo.role,
+				    logoutSuccess = _props$loginInfo.logoutSuccess;
 
+
+				if (loginEmail === '' && logoutSuccess) {
+					_history2.default.push('/');
+				}
 
 				return _react3.default.createElement(
-					"div",
-					{ className: "header" },
+					'div',
+					{ className: 'header' },
 					_react3.default.createElement(
-						"div",
-						{ id: "sidemenu" },
+						'div',
+						{ id: 'sidemenu' },
 						_react3.default.createElement(
-							"div",
+							'div',
 							{ className: !this.state.sideMenuOpen ? "menu-opener" : "menu-opener menu-opener-active", onClick: this.openSideMenu },
-							_react3.default.createElement("span", { className: !this.state.sideMenuOpen ? "fa fa-bars fa-2x" : "fa fa-arrow-left" })
+							_react3.default.createElement('span', { className: !this.state.sideMenuOpen ? "fa fa-bars fa-2x" : "fa fa-arrow-left" })
 						),
 						_react3.default.createElement(
-							"div",
+							'div',
 							{ className: !this.state.sideMenuOpen ? "side-menu side-menu-hide" : "side-menu side-menu-open" },
 							_react3.default.createElement(
-								"ul",
+								'ul',
 								{ onClick: this.openSideMenu },
 								_react3.default.createElement(
-									"li",
+									'li',
 									null,
 									_react3.default.createElement(
 										_reactRouterDom.Link,
-										{ to: "/profile" },
-										"My Profile"
+										{ to: '/profile' },
+										'My Profile'
 									)
 								),
 								_react3.default.createElement(
-									"li",
+									'li',
 									null,
 									_react3.default.createElement(
 										_reactRouterDom.Link,
-										{ to: "/about" },
-										"About Us"
+										{ to: '/about' },
+										'About Us'
 									)
 								),
 								role === 1 && _react3.default.createElement(
-									"li",
+									_react3.default.Fragment,
 									null,
 									_react3.default.createElement(
-										_reactRouterDom.Link,
-										{ to: "/add-checklists" },
-										"Add Checklist"
+										'li',
+										null,
+										_react3.default.createElement(
+											_reactRouterDom.Link,
+											{ to: '/add-checklists' },
+											'Add Checklist'
+										)
+									),
+									_react3.default.createElement(
+										'li',
+										null,
+										_react3.default.createElement(
+											_reactRouterDom.Link,
+											{ to: '/add-project' },
+											'Add Project'
+										)
+									),
+									_react3.default.createElement(
+										'li',
+										null,
+										_react3.default.createElement(
+											_reactRouterDom.Link,
+											{ to: '/see-checklists' },
+											'See Checklists'
+										)
 									)
 								),
 								loginEmail ? _react3.default.createElement(
-									"li",
+									'li',
 									null,
 									_react3.default.createElement(
 										_reactRouterDom.Link,
 										{ onClick: this.props.logout },
-										"Logout"
+										'Logout'
 									)
 								) : _react3.default.createElement(
-									"li",
+									'li',
 									null,
 									_react3.default.createElement(
 										_reactRouterDom.Link,
-										{ to: "/" },
-										"Login"
+										{ to: '/' },
+										'Login'
 									)
 								)
 							)
@@ -54507,8 +54592,9 @@
 
 	function mapStateToProps(state) {
 		return {
-			profileInfo: state.profileInfo,
-			frazilProjects: state.projects.frazilProjects
+			profileInfo: state.userProfile.profileInfo,
+			frazilProjects: state.projects.frazilProjects,
+			saveDataSuccessFully: state.projects.saveDataSuccessFully
 		};
 	}
 
@@ -54516,6 +54602,9 @@
 		return {
 			getProjects: function getProjects() {
 				dispatch((0, _addchecklists.getProjects)());
+			},
+			addChecklists: function addChecklists(payload) {
+				dispatch((0, _addchecklists.addChecklists)(payload));
 			}
 		};
 	}
@@ -54551,6 +54640,8 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _reactTagInput = __webpack_require__(296);
+
+	var _reactRouterDom = __webpack_require__(225);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54607,10 +54698,11 @@
 
 	    _this.state = {
 	      projects: '',
-	      // inputFieldCounter: 0
 	      tags: [],
 	      suggestions: [],
-	      projectSelected: ''
+	      projectSelected: '',
+	      projectSelectedEmpty: false,
+	      saveDataSuccessFully: ''
 	    };
 	    _this.handleDelete = _this.handleDelete.bind(_this);
 	    _this.handleAddition = _this.handleAddition.bind(_this);
@@ -54636,18 +54728,24 @@
 	      var _state = this.state,
 	          tags = _state.tags,
 	          projectSelected = _state.projectSelected;
+	      var _props = this.props,
+	          addChecklists = _props.addChecklists,
+	          _props$profileInfo = _props.profileInfo;
+	      _props$profileInfo = _props$profileInfo === undefined ? {} : _props$profileInfo;
+	      var id = _props$profileInfo.id;
 
 	      var payload = {
 	        tags: tags,
-	        projectSelected: projectSelected
+	        projectSelected: projectSelected,
+	        user_id: id
 	      };
-	      console.log('payload', payload);
+	      if (projectSelected && tags.length) {
+	        addChecklists(payload);
+	        this.setState({ projectSelectedEmpty: false });
+	      } else {
+	        this.setState({ projectSelectedEmpty: true });
+	      }
 	    }
-
-	    // removeChecklistInput(id) {
-	    //   console.log(id);
-	    // }
-
 	  }, {
 	    key: 'handleDelete',
 	    value: function handleDelete(i) {
@@ -54686,7 +54784,6 @@
 	      var value = _e$target.value,
 	          name = _e$target.name;
 
-	      console.log('value', value);
 	      this.setState(_defineProperty({}, name, value));
 	    }
 	  }, {
@@ -54698,7 +54795,7 @@
 	          projects = _state2.projects,
 	          tags = _state2.tags,
 	          suggestions = _state2.suggestions,
-	          projectSelected = _state2.projectSelected;
+	          projectSelectedEmpty = _state2.projectSelectedEmpty;
 
 	      var allProjects = [];
 	      projects && projects.map(function (project) {
@@ -54708,12 +54805,8 @@
 	          project.name
 	        ));
 	      });
-	      // let fields = [];
-	      // for(var i = 0; i < inputFieldCounter; i++) {
-	      //   fields.push(<div className="checklists"><input type="text" className="form-control" name={`checklist_${i}`} id={`checklist_${i}`} /><button className="btn btn-ghost-o" onClick={() => this.removeChecklistInput(`checklist_${i}`)}>X</button></div>);
-	      // }
+	      var saveDataSuccessFully = this.props.saveDataSuccessFully;
 
-	      console.log('projectSelected', projectSelected);
 
 	      return _react3.default.createElement(
 	        _react3.default.Fragment,
@@ -54731,6 +54824,24 @@
 	                'h3',
 	                null,
 	                'Add Checklists'
+	              ),
+	              saveDataSuccessFully && _react3.default.createElement(
+	                'div',
+	                { style: { marginBottom: '2rem' } },
+	                _react3.default.createElement(
+	                  'p',
+	                  { className: 'text-success' },
+	                  'Checklists addedd successfully!'
+	                ),
+	                _react3.default.createElement(
+	                  'p',
+	                  null,
+	                  _react3.default.createElement(
+	                    _reactRouterDom.Link,
+	                    { to: '/see-checklists', className: 'btn btn-dark-o' },
+	                    'See checklists'
+	                  )
+	                )
 	              ),
 	              _react3.default.createElement(
 	                'div',
@@ -54750,7 +54861,21 @@
 	                    { value: '' },
 	                    'Select project'
 	                  ),
-	                  allProjects
+	                  allProjects,
+	                  _react3.default.createElement(
+	                    _reactRouterDom.Link,
+	                    { to: '/add-project', className: 'btn btn-purple-o' },
+	                    'Add Project'
+	                  )
+	                ),
+	                projectSelectedEmpty && _react3.default.createElement(
+	                  'div',
+	                  null,
+	                  _react3.default.createElement(
+	                    'small',
+	                    { className: 'text-error' },
+	                    'Please enter project name'
+	                  )
 	                )
 	              ),
 	              _react3.default.createElement(
@@ -85249,9 +85374,14 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.getProjects = getProjects;
+	exports.addChecklists = addChecklists;
+	exports.saveSuccessfully = saveSuccessfully;
+	exports.addProject = addProject;
+	exports.projectChecklists = projectChecklists;
+	exports.seeChecklists = seeChecklists;
 
 	var _ActionTypes = __webpack_require__(221);
 
@@ -85264,44 +85394,620 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function fetchProjectRequest() {
-	  return {
-	    type: _ActionTypes2.default.FETCH_PROJECT_REQUEST
-	  };
+	    return {
+	        type: _ActionTypes2.default.FETCH_PROJECT_REQUEST
+	    };
 	}
 
 	function fetchProjectSuccess(response) {
-	  return {
-	    type: _ActionTypes2.default.FETCH_PROJECT_SUCCESS,
-	    response: response
-	  };
+	    return {
+	        type: _ActionTypes2.default.FETCH_PROJECT_SUCCESS,
+	        response: response
+	    };
 	}
 
 	function fetchProjectFailed(error) {
-	  return {
-	    type: _ActionTypes2.default.FETCH_PROJECT_FAILED,
-	    error: error
-	  };
+	    return {
+	        type: _ActionTypes2.default.FETCH_PROJECT_FAILED,
+	        error: error
+	    };
+	}
+
+	function fetchStart() {
+	    return {
+	        type: _ActionTypes2.default.FETCHING_START
+	    };
+	}
+
+	function fetchStop(response) {
+	    return {
+	        type: _ActionTypes2.default.FETCHING_STOP,
+	        response: response
+	    };
+	}
+
+	function fetchFailed(error) {
+	    return {
+	        type: _ActionTypes2.default.FETCHING_FAILED,
+	        error: error
+	    };
 	}
 
 	function getProjects() {
-	  return function (dispatch) {
-	    dispatch(fetchProjectRequest());
-	    return _axios2.default.post('/projects.php', {}).then(function (res) {
-	      dispatch(fetchProjectSuccess(res.data));
-	    }).catch(function () {
-	      dispatch(fetchProjectFailed(true));
-	    });
-	  };
+	    return function (dispatch) {
+	        dispatch(fetchProjectRequest());
+	        return _axios2.default.post('/projects.php', {}).then(function (res) {
+	            dispatch(fetchProjectSuccess(res.data));
+	        }).catch(function () {
+	            dispatch(fetchProjectFailed(true));
+	        });
+	    };
+	}
+
+	function addChecklists(payload) {
+	    return function (dispatch) {
+	        dispatch(fetchStart());
+	        return _axios2.default.post('/add-checklists.php', {
+	            project: payload.projectSelected,
+	            checklists: payload.tags,
+	            userId: payload.user_id
+	        }).then(function (res) {
+	            if (res.data.success === 1) {
+	                dispatch(fetchStop());
+	                dispatch(saveSuccessfully(res.data.success));
+	            } else {
+	                dispatch(fetchFailed(true));
+	            }
+	        }).catch(function () {
+	            dispatch(fetchFailed(true));
+	        });
+	    };
+	}
+
+	function saveSuccessfully(response) {
+	    return {
+	        type: _ActionTypes2.default.SAVE_SUCCESSFULLY,
+	        response: response
+	    };
+	}
+
+	function addProject(payload) {
+	    return function (dispatch) {
+	        dispatch(fetchStart());
+	        return _axios2.default.post('/add-project.php', {
+	            project: payload.projectName,
+	            userId: payload.user_id
+	        }).then(function (res) {
+	            if (res.data.success === 1) {
+	                dispatch(fetchStop());
+	                dispatch(saveSuccessfully(res.data.success));
+	            } else {
+	                dispatch(fetchFailed(true));
+	            }
+	        }).catch(function () {
+	            dispatch(fetchFailed(true));
+	        });
+	    };
+	}
+
+	function projectChecklists(response) {
+	    return {
+	        type: _ActionTypes2.default.PROJECT_CHECKLISTS,
+	        response: response
+	    };
+	}
+
+	function seeChecklists(payload) {
+	    return function (dispatch) {
+	        dispatch(fetchStart());
+	        return _axios2.default.post('/see-checklists.php', {
+	            project: payload.projectSelected,
+	            userId: payload.user_id
+	        }).then(function (res) {
+	            if (res.data.length) {
+	                dispatch(fetchStop());
+	                dispatch(projectChecklists(res.data));
+	                dispatch(saveSuccessfully(1));
+	            } else {
+	                dispatch(fetchFailed(true));
+	                dispatch(projectChecklists(res.data));
+	            }
+	        }).catch(function () {
+	            dispatch(fetchFailed(true));
+	        });
+	    };
 	}
 
 /***/ }),
 /* 535 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _reactRedux = __webpack_require__(185);
+
+	var _AddProject = __webpack_require__(536);
+
+	var _AddProject2 = _interopRequireDefault(_AddProject);
+
+	var _addchecklists = __webpack_require__(534);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function mapStateToProps(state) {
+		return {
+			profileInfo: state.userProfile.profileInfo,
+			frazilProjects: state.projects.frazilProjects,
+			saveDataSuccessFully: state.projects.saveDataSuccessFully
+		};
+	}
+
+	function mapDispatchToProps(dispatch) {
+		return {
+			addProject: function addProject(payload) {
+				dispatch((0, _addchecklists.addProject)(payload));
+			}
+		};
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AddProject2.default);
+
+/***/ }),
+/* 536 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _index = __webpack_require__(2);
+
+	var _index2 = _interopRequireDefault(_index);
+
+	var _index3 = __webpack_require__(30);
+
+	var _index4 = _interopRequireDefault(_index3);
+
+	var _react2 = __webpack_require__(13);
+
+	var _react3 = _interopRequireDefault(_react2);
+
+	var _index5 = __webpack_require__(31);
+
+	var _index6 = _interopRequireDefault(_index5);
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRouterDom = __webpack_require__(225);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _components = {
+	  AddProject: {
+	    displayName: 'AddProject'
+	  }
+	};
+
+	var _ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformHmrLibIndexJs2 = (0, _index6.default)({
+	  filename: '/Applications/MAMP/htdocs/frazilapp/src/AddProject/AddProject.jsx',
+	  components: _components,
+	  locals: [module],
+	  imports: [_react3.default]
+	});
+
+	var _ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformCatchErrorsLibIndexJs2 = (0, _index4.default)({
+	  filename: '/Applications/MAMP/htdocs/frazilapp/src/AddProject/AddProject.jsx',
+	  components: _components,
+	  locals: [],
+	  imports: [_react3.default, _index2.default]
+	});
+
+	function _wrapComponent(id) {
+	  return function (Component) {
+	    return _ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformHmrLibIndexJs2(_ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformCatchErrorsLibIndexJs2(Component, id), id);
+	  };
+	}
+
+	var AddProject = _wrapComponent('AddProject')(function (_Component) {
+	  _inherits(AddProject, _Component);
+
+	  function AddProject(props) {
+	    _classCallCheck(this, AddProject);
+
+	    var _this = _possibleConstructorReturn(this, (AddProject.__proto__ || Object.getPrototypeOf(AddProject)).call(this, props));
+
+	    _this.state = {
+	      projectName: '',
+	      projectNameEmpty: false,
+	      saveDataSuccessFully: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(AddProject, [{
+	    key: 'onChange',
+	    value: function onChange(e) {
+	      var _e$target = e.target;
+	      _e$target = _e$target === undefined ? {} : _e$target;
+	      var value = _e$target.value,
+	          name = _e$target.name;
+
+	      this.setState(_defineProperty({}, name, value));
+	    }
+	  }, {
+	    key: 'saveProject',
+	    value: function saveProject() {
+	      var projectName = this.state.projectName;
+	      var _props = this.props,
+	          addProject = _props.addProject,
+	          _props$profileInfo = _props.profileInfo;
+	      _props$profileInfo = _props$profileInfo === undefined ? {} : _props$profileInfo;
+	      var id = _props$profileInfo.id;
+
+	      if (projectName) {
+	        var payload = {
+	          projectName: projectName,
+	          user_id: id
+	        };
+	        addProject(payload);
+	        this.setState({ projectNameEmpty: false });
+	      } else {
+	        this.setState({ projectNameEmpty: true });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var projectNameEmpty = this.state.projectNameEmpty;
+	      var saveDataSuccessFully = this.props.saveDataSuccessFully;
+
+	      return _react3.default.createElement(
+	        _react3.default.Fragment,
+	        null,
+	        _react3.default.createElement(
+	          'div',
+	          { className: 'container m-t-50' },
+	          _react3.default.createElement(
+	            'div',
+	            { className: 'panel panel-default' },
+	            _react3.default.createElement(
+	              'div',
+	              { className: 'panel-body' },
+	              _react3.default.createElement(
+	                'h3',
+	                null,
+	                'Add Project'
+	              ),
+	              saveDataSuccessFully && _react3.default.createElement(
+	                'div',
+	                { style: { marginBottom: '2rem' } },
+	                _react3.default.createElement(
+	                  'p',
+	                  { className: 'text-success' },
+	                  'Project name added successfully!'
+	                ),
+	                _react3.default.createElement(
+	                  'p',
+	                  null,
+	                  _react3.default.createElement(
+	                    _reactRouterDom.Link,
+	                    { to: '/add-checklists', className: 'btn btn-dark-o' },
+	                    'Add checklists'
+	                  )
+	                )
+	              ),
+	              _react3.default.createElement(
+	                'div',
+	                { className: 'form-group m-b-rg' },
+	                _react3.default.createElement(
+	                  'label',
+	                  null,
+	                  'Enter project name'
+	                ),
+	                _react3.default.createElement('input', { type: 'text', name: 'projectName', className: 'form-control', onChange: function onChange(e) {
+	                    return _this2.onChange(e);
+	                  } }),
+	                projectNameEmpty && _react3.default.createElement(
+	                  'div',
+	                  null,
+	                  _react3.default.createElement(
+	                    'small',
+	                    { className: 'text-error' },
+	                    'Please enter project name'
+	                  )
+	                )
+	              ),
+	              _react3.default.createElement(
+	                'div',
+	                { className: 'form-group m-b-rg' },
+	                _react3.default.createElement(
+	                  'button',
+	                  { type: 'button', className: 'btn btn-purple-o', onClick: function onClick() {
+	                      return _this2.saveProject();
+	                    } },
+	                  'Save project'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AddProject;
+	}(_react2.Component));
+
+	exports.default = AddProject;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)(module)))
+
+/***/ }),
+/* 537 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _reactRedux = __webpack_require__(185);
+
+	var _SeeChecklists = __webpack_require__(538);
+
+	var _SeeChecklists2 = _interopRequireDefault(_SeeChecklists);
+
+	var _addchecklists = __webpack_require__(534);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function mapStateToProps(state) {
+		return {
+			profileInfo: state.userProfile.profileInfo,
+			frazilProjects: state.projects.frazilProjects,
+			fetching: state.projects.fetching,
+			projectChecklists: state.projects.projectChecklists
+		};
+	}
+
+	function mapDispatchToProps(dispatch) {
+		return {
+			getProjects: function getProjects() {
+				dispatch((0, _addchecklists.getProjects)());
+			},
+			seeChecklists: function seeChecklists(payload) {
+				dispatch((0, _addchecklists.seeChecklists)(payload));
+			}
+		};
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_SeeChecklists2.default);
+
+/***/ }),
+/* 538 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _index = __webpack_require__(2);
+
+	var _index2 = _interopRequireDefault(_index);
+
+	var _index3 = __webpack_require__(30);
+
+	var _index4 = _interopRequireDefault(_index3);
+
+	var _react2 = __webpack_require__(13);
+
+	var _react3 = _interopRequireDefault(_react2);
+
+	var _index5 = __webpack_require__(31);
+
+	var _index6 = _interopRequireDefault(_index5);
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRouterDom = __webpack_require__(225);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _components = {
+	  SeeChecklists: {
+	    displayName: 'SeeChecklists'
+	  }
+	};
+
+	var _ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformHmrLibIndexJs2 = (0, _index6.default)({
+	  filename: '/Applications/MAMP/htdocs/frazilapp/src/AddChecklists/SeeChecklists.jsx',
+	  components: _components,
+	  locals: [module],
+	  imports: [_react3.default]
+	});
+
+	var _ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformCatchErrorsLibIndexJs2 = (0, _index4.default)({
+	  filename: '/Applications/MAMP/htdocs/frazilapp/src/AddChecklists/SeeChecklists.jsx',
+	  components: _components,
+	  locals: [],
+	  imports: [_react3.default, _index2.default]
+	});
+
+	function _wrapComponent(id) {
+	  return function (Component) {
+	    return _ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformHmrLibIndexJs2(_ApplicationsMAMPHtdocsFrazilappNode_modulesReactTransformCatchErrorsLibIndexJs2(Component, id), id);
+	  };
+	}
+
+	var SeeChecklists = _wrapComponent('SeeChecklists')(function (_Component) {
+	  _inherits(SeeChecklists, _Component);
+
+	  function SeeChecklists(props) {
+	    _classCallCheck(this, SeeChecklists);
+
+	    var _this = _possibleConstructorReturn(this, (SeeChecklists.__proto__ || Object.getPrototypeOf(SeeChecklists)).call(this, props));
+
+	    _this.state = {
+	      user_id: props.profileInfo.id,
+	      projectSelected: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(SeeChecklists, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.props.getProjects();
+	    }
+	  }, {
+	    key: 'onChange',
+	    value: function onChange(e) {
+	      var _this2 = this;
+
+	      var _e$target = e.target;
+	      _e$target = _e$target === undefined ? {} : _e$target;
+	      var value = _e$target.value,
+	          name = _e$target.name;
+
+	      this.setState(_defineProperty({}, name, value), function () {
+	        var _state = _this2.state,
+	            user_id = _state.user_id,
+	            projectSelected = _state.projectSelected;
+
+	        var payload = {
+	          user_id: user_id,
+	          projectSelected: projectSelected
+	        };
+	        _this2.props.seeChecklists(payload);
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      var _props = this.props,
+	          fetching = _props.fetching,
+	          frazilProjects = _props.frazilProjects,
+	          projectChecklists = _props.projectChecklists;
+
+	      var allProjects = [];
+	      frazilProjects.length && frazilProjects.map(function (project) {
+	        return allProjects.push(_react3.default.createElement(
+	          'option',
+	          { value: project.id },
+	          project.name
+	        ));
+	      });
+
+	      var allChecklists = [];
+	      projectChecklists && projectChecklists.map(function (item) {
+	        return allChecklists.push(_react3.default.createElement(
+	          'li',
+	          { key: item.id },
+	          item.checklist
+	        ));
+	      });
+
+	      return _react3.default.createElement(
+	        _react3.default.Fragment,
+	        null,
+	        _react3.default.createElement(
+	          'div',
+	          { className: 'container m-t-50' },
+	          _react3.default.createElement(
+	            'div',
+	            { className: 'panel panel-default' },
+	            _react3.default.createElement(
+	              'div',
+	              { className: 'panel-body' },
+	              _react3.default.createElement(
+	                'h3',
+	                null,
+	                'Checklists'
+	              ),
+	              _react3.default.createElement(
+	                'div',
+	                { className: 'form-group m-b-rg' },
+	                _react3.default.createElement(
+	                  'label',
+	                  null,
+	                  'Select Project'
+	                ),
+	                _react3.default.createElement(
+	                  'select',
+	                  { name: 'projectSelected', className: 'form-control', style: { height: '40px' }, onChange: function onChange(e) {
+	                      return _this3.onChange(e);
+	                    } },
+	                  _react3.default.createElement(
+	                    'option',
+	                    { value: '' },
+	                    'Select project'
+	                  ),
+	                  allProjects,
+	                  _react3.default.createElement(
+	                    _reactRouterDom.Link,
+	                    { to: '/add-project', className: 'btn btn-purple-o' },
+	                    'Add Project'
+	                  )
+	                )
+	              ),
+	              _react3.default.createElement(
+	                'div',
+	                null,
+	                fetching ? _react3.default.createElement(
+	                  'div',
+	                  { style: { display: 'flex', justifyContent: 'center' } },
+	                  _react3.default.createElement('span', { className: 'fa fa-spin fa-spinner fa-2x' })
+	                ) : allChecklists
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SeeChecklists;
+	}(_react2.Component));
+
+	exports.default = SeeChecklists;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)(module)))
+
+/***/ }),
+/* 539 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(536);
+	var content = __webpack_require__(540);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(257)(content, {});
@@ -85310,8 +86016,8 @@
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(536, function() {
-				var newContent = __webpack_require__(536);
+			module.hot.accept(540, function() {
+				var newContent = __webpack_require__(540);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -85321,7 +86027,7 @@
 	}
 
 /***/ }),
-/* 536 */
+/* 540 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(256)(false);
@@ -85329,7 +86035,7 @@
 
 
 	// module
-	exports.push([module.id, ".pos-rel {\n  position: relative;\n}\n.pos-fix {\n  position: fixed;\n}\n.pos-abs {\n  position: absolute;\n}\n.dis-block {\n  display: block;\n}\n.dis-inline-block {\n  display: inline-block;\n}\n.dis-inline {\n  display: inline;\n}\n.dis-none {\n  display: none;\n}\n.text-xxlg {\n  font-size: 2.813rem;\n}\n.text-xlg {\n  font-size: 2.125rem;\n}\n.text-lg {\n  font-size: 1.5rem;\n}\n.text-md {\n  font-size: 1.25rem;\n}\n.text-rg {\n  font-size: 1rem;\n}\n.text-sm {\n  font-size: 0.875rem;\n}\n.text-xs {\n  font-size: 0.75rem;\n}\n.text-decoration-underline {\n  text-decoration: underline;\n}\n.text-decoration-none {\n  text-decoration: none;\n}\n.text-black {\n  color: #3c4858;\n}\n.text-silver {\n  color: #687484;\n}\n.text-steel {\n  color: #8492a6;\n}\n.text-slate {\n  color: #c0ccda;\n}\n.text-smoke {\n  color: #eff2f7;\n}\n.text-snow {\n  color: #f9fafc;\n}\n.text-success {\n  color: #75b654;\n}\n.text-error {\n  color: #e71e1e;\n}\n.text-info {\n  color: #1ea1e7;\n}\n.text-center {\n  text-align: center;\n}\n.text-left {\n  text-align: left;\n}\n.text-right {\n  text-align: right;\n}\n.m-t-0 {\n  margin-top: 0px;\n}\n.m-l-0 {\n  margin-left: 0px;\n}\n.m-r-0 {\n  margin-right: 0px;\n}\n.m-b-0 {\n  margin-bottom: 0px;\n}\n.p-t-0 {\n  padding-top: 0px;\n}\n.p-l-0 {\n  padding-left: 0px;\n}\n.p-r-0 {\n  padding-right: 0px;\n}\n.p-b-0 {\n  padding-bottom: 0px;\n}\n.m-t-xxs {\n  margin-top: 5px;\n}\n.m-t-xs {\n  margin-top: 10px;\n}\n.m-t-sm {\n  margin-top: 15px;\n}\n.m-t-rg {\n  margin-top: 20px;\n}\n.m-t-md {\n  margin-top: 25px;\n}\n.m-t-lg {\n  margin-top: 30px;\n}\n.m-t-xlg {\n  margin-top: 35px;\n}\n.m-t-xxlg {\n  margin-top: 40px;\n}\n.m-b-xxs {\n  margin-bottom: 5px;\n}\n.m-b-xs {\n  margin-bottom: 10px;\n}\n.m-b-sm {\n  margin-bottom: 15px;\n}\n.m-b-rg {\n  margin-bottom: 20px;\n}\n.m-b-md {\n  margin-bottom: 25px;\n}\n.m-b-lg {\n  margin-bottom: 30px;\n}\n.m-b-xlg {\n  margin-bottom: 35px;\n}\n.m-b-xxlg {\n  margin-bottom: 40px;\n}\n.m-l-xxs {\n  margin-left: 5px;\n}\n.m-l-xs {\n  margin-left: 10px;\n}\n.m-l-sm {\n  margin-left: 15px;\n}\n.m-l-rg {\n  margin-left: 20px;\n}\n.m-l-md {\n  margin-left: 25px;\n}\n.m-l-lg {\n  margin-left: 30px;\n}\n.m-l-xlg {\n  margin-left: 35px;\n}\n.m-l-xxlg {\n  margin-left: 40px;\n}\n.m-r-xxs {\n  margin-right: 5px;\n}\n.m-r-xs {\n  margin-right: 10px;\n}\n.m-r-sm {\n  margin-right: 15px;\n}\n.m-r-rg {\n  margin-right: 20px;\n}\n.m-r-md {\n  margin-right: 25px;\n}\n.m-r-lg {\n  margin-right: 30px;\n}\n.m-r-xlg {\n  margin-right: 35px;\n}\n.m-r-xxlg {\n  margin-right: 40px;\n}\n.p-t-xxs {\n  padding-top: 5px;\n}\n.p-t-xs {\n  padding-top: 10px;\n}\n.p-t-sm {\n  padding-top: 15px;\n}\n.p-t-rg {\n  padding-top: 20px;\n}\n.p-t-md {\n  padding-top: 25px;\n}\n.p-t-lg {\n  padding-top: 30px;\n}\n.p-t-xlg {\n  padding-top: 35px;\n}\n.p-t-xxlg {\n  padding-top: 40px;\n}\n.p-b-xxs {\n  padding-bottom: 5px;\n}\n.p-b-xs {\n  padding-bottom: 10px;\n}\n.p-b-sm {\n  padding-bottom: 15px;\n}\n.p-b-rg {\n  padding-bottom: 20px;\n}\n.p-b-md {\n  padding-bottom: 25px;\n}\n.p-b-lg {\n  padding-bottom: 30px;\n}\n.p-b-xlg {\n  padding-bottom: 35px;\n}\n.p-b-xxlg {\n  padding-bottom: 40px;\n}\n.p-l-xxs {\n  padding-left: 5px;\n}\n.p-l-xs {\n  padding-left: 10px;\n}\n.p-l-sm {\n  padding-left: 15px;\n}\n.p-l-rg {\n  padding-left: 20px;\n}\n.p-l-md {\n  padding-left: 25px;\n}\n.p-l-lg {\n  padding-left: 30px;\n}\n.p-l-xlg {\n  padding-left: 35px;\n}\n.p-l-xxlg {\n  padding-left: 40px;\n}\n.p-r-xxs {\n  padding-right: 5px;\n}\n.p-r-xs {\n  padding-right: 10px;\n}\n.p-r-sm {\n  padding-right: 15px;\n}\n.p-r-rg {\n  padding-right: 20px;\n}\n.p-r-md {\n  padding-right: 25px;\n}\n.p-r-lg {\n  padding-right: 30px;\n}\n.p-r-xlg {\n  padding-right: 35px;\n}\n.p-r-xxlg {\n  padding-right: 40px;\n}\n.show {\n  display: block !important;\n}\n.hide {\n  display: none !important;\n}\n.width-100 {\n  width: 100% !important;\n}\n.width-100px {\n  width: 100px !important;\n}\n.overflow-hidden {\n  overflow: hidden;\n}\n.overflow-auto {\n  overflow: auto;\n}\n.clearfix {\n  width: 100%;\n  clear: both;\n}\n.panel {\n  padding: 15px;\n}\n.panel .panel-body {\n  padding: 0 15px 30px;\n}\n.panel .panel-row {\n  box-shadow: 0px 0px 3px #c0ccda;\n}\n.panel .panel-row .row-item {\n  position: relative;\n  background: #fff;\n  padding: 0.5rem 0.8rem;\n  border-left: 1px solid #c0ccda;\n  border-right: 1px solid #c0ccda;\n  color: #687484;\n}\n.panel .panel-row .row-item:not(:first-child),\n.panel .panel-row .row-item:not(:last-child) {\n  border-radius: 0;\n  border-top: none;\n  border-bottom: none;\n}\n.panel .panel-row .row-item:first-child {\n  border-bottom: 1px solid #c0ccda;\n  border-top: 1px solid #c0ccda;\n}\n.panel .panel-row .row-item:last-child {\n  border-bottom: 1px solid #c0ccda;\n  border-top: 1px solid #c0ccda;\n}\n.panel .panel-row .row-item .label {\n  display: inline-block;\n}\n.panel .panel-row .row-item .label-value {\n  display: inline-block;\n}\n.panel .panel-row .row-item .counts {\n  margin: 10px 10px 10px 28px;\n  font-size: 42px;\n}\n.panel .panel-row .row-item .goto-link {\n  position: absolute;\n  top: 50%;\n  margin-top: -1em;\n  right: 0px;\n  cursor: pointer;\n}\n.form-control {\n  padding: 10px;\n  border: 1px solid #c0ccda;\n  color: #687484;\n  font-size: 0.875rem;\n  border-radius: 2px;\n  display: block;\n  background: #fff;\n  width: calc(100% - 20px);\n}\n.btn {\n  padding: 10px 15px;\n  border: 1px solid;\n  background: none;\n  border-radius: 2px;\n  font-size: 0.875rem;\n  transition: ease-in 0.5s;\n  text-decoration: none;\n  text-align: center;\n  transition: ease-in-out 0.5s;\n}\n.btn-block {\n  width: calc(100% + 2px);\n  display: block;\n  box-sizing: border-box;\n}\n.btn-sm {\n  padding: 5px 10px;\n  box-sizing: border-box;\n}\n.btn-default {\n  background: #eff2f7;\n  color: #687484;\n  border-color: #c0ccda;\n}\n.btn-default:hover {\n  background: #cdd6e6;\n  border-color: transparent;\n}\n.btn-login {\n  background: #30b7e6;\n  color: #fff;\n  border-color: #3ba1c3;\n}\n.btn-login:hover {\n  background: #138fb9;\n}\n.btn-success {\n  background: #75b654;\n  color: #f9fafc;\n  border-color: transparent;\n}\n.btn-success:hover {\n  background: #314f22;\n  border-color: transparent;\n}\n.btn-danger {\n  background: #e71e1e;\n  color: #f9fafc;\n  border-color: transparent;\n}\n.btn-danger:hover {\n  background: #620a0a;\n  border-color: transparent;\n}\n.btn-purple-o {\n  border-radius: 30px;\n  background: #c52fda;\n  color: #fff;\n  border: none;\n}\n.btn-purple-o:hover {\n  background: #b027c4;\n}\n.btn-ghost-o {\n  border-radius: 30px;\n  background: #fff;\n  color: #333;\n  border: none;\n}\n.btn-ghost-o:hover {\n  background: #f8f8f8;\n}\n.btn:disabled {\n  background: #f9fafc !important;\n  color: #c0ccda !important;\n  border: 1px solid #eff2f7;\n}\n.anchor-link {\n  text-decoration: underline;\n  color: #1ea1e7;\n}\n.anchor-link:hover {\n  text-decoration: none;\n}\n.btn-group .btn + .btn {\n  margin-left: -1px;\n}\n.btn-group .btn:not(:first-child),\n.btn-group .btn:not(:last-child) {\n  border-radius: 0;\n}\n.btn-group .btn:last-child {\n  border-radius: 0 2px 2px 0;\n}\n.btn-group .btn:first-child {\n  border-radius: 2px 0 0 2px;\n}\n.action-btn .btn {\n  padding: 7px 12px;\n  background: #f9fafc;\n  border-color: #c0ccda;\n}\n.action-btn .btn + .btn {\n  margin-left: -1px;\n}\n.action-btn .btn:not(:first-child),\n.action-btn .btn:not(:last-child) {\n  border-radius: 0;\n}\n.action-btn .btn:last-child {\n  border-radius: 0 2px 2px 0;\n}\n.action-btn .btn:first-child {\n  border-radius: 2px 0 0 2px;\n}\n.list-table {\n  background: #eff2f7;\n  border-radius: 2px;\n  border: 1px solid #c0ccda;\n}\n.list-table ul {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.list-table ul li {\n  border-bottom: 1px solid #c0ccda;\n  padding: 10px 5px;\n}\n.text-black .list-table ul li:last-child {\n  border-bottom: none;\n}\n.list-table ul li a,\n.list-table ul li a:hover {\n  text-decoration: none;\n  color: #687484;\n}\n.form-group .list-table label {\n  padding-bottom: 0;\n  color: #687484;\n}\nul.unstyle {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\nul.unstyle li {\n  border-bottom: 1px solid #c0ccda;\n  padding: 10px 5px;\n}\n.text-black ul.unstyle li:last-child {\n  border-bottom: none;\n}\nul.unstyle li a,\nul.unstyle li a:hover {\n  text-decoration: none;\n  color: #687484;\n}\n.group-anchor a,\n.group-anchor a:hover {\n  color: #1ea1e7;\n  text-decoration: underline;\n  position: relative;\n  margin: auto;\n}\n.group-anchor a:not(:first-child) {\n  margin-left: 15px;\n}\n.group-anchor a:not(:first-child)::after {\n  content: \"-\";\n  position: absolute;\n  top: 0;\n  left: -10px;\n}\n.modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.modal .modal-dialog {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  background: #f9fafc;\n  padding: 20px;\n  color: #f9fafc;\n  border-radius: 3px;\n  border: 1px solid #eff2f7;\n  z-index: 99999;\n}\n.modal .modal-header {\n  position: relative;\n  padding: 10px 0 20px;\n}\n.modal .modal-header .modal-title {\n  font-size: 1rem;\n  padding: 0;\n  margin: 0;\n  color: #687484;\n}\n.modal .modal-header .close-modal {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  width: 30px;\n  height: 30px;\n  border: none;\n  background: none;\n  cursor: pointer;\n}\n.modal .modal-header .close-modal:after {\n  content: \"\\F00D\";\n  position: absolute;\n  top: 5px;\n  right: 5px;\n  font-family: \"fontAwesome\";\n  font-size: 1.5rem;\n}\n.modal .modal-body {\n  max-height: 300px;\n  overflow: auto;\n}\n.modal .modal-body .modal-message {\n  font-size: 0.875rem;\n}\n.help-text {\n  font-size: 0.75rem;\n  padding: 5px 0;\n  display: block;\n}\n.help-text-error {\n  color: #e71e1e;\n}\n.checkbox-dropdown .checkbox-container {\n  background: #fff;\n  max-height: 200px;\n  overflow: auto;\n}\n.checkbox-dropdown label {\n  display: block;\n}\n.alert {\n  padding: 5px 10px;\n  border-radius: 3px;\n}\n.alert-success {\n  background: #e7faf0;\n  border: 1px solid #13ce66;\n  color: #13ce66;\n}\n.alert-info {\n  background: #e9f8ff;\n  border: 1px solid #1fb6ff;\n  color: #1fb6ff;\n}\n.alert-error {\n  background: #ffeded;\n  border: 1px solid #ff4949;\n  color: #ff4949;\n}\n.alert-warning {\n  background: #fff5eb;\n  border: 1px solid #f93;\n  color: #f93;\n}\n@-webkit-keyframes fadeOut {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n    height: 0;\n  }\n}\n@keyframes fadeOut {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n    height: 0;\n  }\n}\n.alert-fade-out {\n  -webkit-animation-name: fadeOut;\n  animation-name: fadeOut;\n  -webkit-animation-duration: 2s;\n  animation-duration: 2s;\n  -webkit-animation-fill-mode: both;\n  animation-fill-mode: both;\n}\n.table {\n  border-collapse: collapse;\n}\n.table td {\n  padding: 5px;\n  border-bottom: 1px solid #687484;\n}\n.form-box ul {\n  padding: 0;\n  margin: 0;\n  list-style: none;\n}\n.form-box ul li {\n  margin-bottom: 10px;\n}\n.form-box .form-control,\n.form-box .form-control:focus {\n  padding-left: 10px;\n  border: none;\n  outline: none !important;\n  border: 1px solid #c0ccda;\n}\n.hint-text {\n  font-size: 12px;\n}\n@font-face {\n  font-family: 'Montserrat';\n  font-style: normal;\n  font-weight: 400;\n  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(http://fonts.gstatic.com/s/montserrat/v14/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf) format('truetype');\n}\n@font-face {\n  font-family: 'Montserrat';\n  font-style: normal;\n  font-weight: 700;\n  src: local('Montserrat Bold'), local('Montserrat-Bold'), url(http://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gnD-w.ttf) format('truetype');\n}\nhtml {\n  min-height: 100%;\n}\nbody {\n  background-color: #fefefe;\n  font-family: Montserrat, sans-serif;\n  color: #3c4858;\n  line-height: 20px;\n  font-size: 14px;\n  margin: 0;\n}\n.header {\n  position: fixed;\n  background: #f9fafc;\n  height: 50px;\n  width: 100%;\n  z-index: 9;\n  box-shadow: -1px 1px 4px #e2e2e2;\n  top: 0;\n}\n.content-section {\n  padding-top: 50px;\n  max-width: 650px;\n  margin: auto;\n}\n/* Safari 4.0 - 8.0 */\n@-webkit-keyframes menuOpen {\n  from {\n    left: -110%;\n  }\n  to {\n    left: 0px;\n  }\n}\n/* Standard syntax */\n@keyframes menuOpen {\n  from {\n    left: -110%;\n  }\n  to {\n    left: 0px;\n  }\n}\n/* Safari 4.0 - 8.0 */\n@-webkit-keyframes menuHide {\n  from {\n    left: 0px;\n  }\n  to {\n    left: -110%;\n  }\n}\n/* Standard syntax */\n@keyframes menuHide {\n  from {\n    left: 0px;\n  }\n  to {\n    left: -110%;\n  }\n}\n.menu-opener {\n  position: absolute;\n  left: 15px;\n  top: 10px;\n  color: #3c4858;\n  z-index: 100;\n}\n.menu-opener.menu-opener-active {\n  color: #f9fafc;\n}\n.side-menu {\n  background: #873895;\n  position: fixed;\n  z-index: 99;\n  width: 225px;\n  height: 100%;\n  top: 0px;\n  box-shadow: 2px 0 10px #666;\n}\n.side-menu.side-menu-open {\n  -webkit-animation: menuOpen 0.5s;\n  /* Safari 4.0 - 8.0 */\n  animation: menuOpen 0.5s;\n  left: 0px;\n}\n.side-menu.side-menu-hide {\n  -webkit-animation: menuHide 0.5s;\n  /* Safari 4.0 - 8.0 */\n  animation: menuHide 0.5s;\n  left: -110%;\n}\n.side-menu ul {\n  width: 100%;\n  list-style: none;\n  padding: 0;\n  margin-top: 2rem;\n}\n.side-menu ul li {\n  width: calc(100% - 2rem);\n  border-bottom: 1px solid #f8f8f8;\n  padding: 0.5rem 1rem;\n}\n.side-menu ul li a {\n  display: block;\n  color: #f9fafc;\n  padding: 8px 0;\n  text-decoration: none;\n}\n.side-menu ul li.divider {\n  border-bottom: 1px solid #eff2f7;\n  margin: 10px 0;\n}\n.form-group {\n  position: relative;\n  margin: 0 auto 20px;\n}\n.form-group label {\n  margin-bottom: 0;\n  color: #687484;\n  font-size: 0.75rem;\n  line-height: 11px;\n  letter-spacing: 1px;\n  padding-bottom: 10px;\n  display: block;\n}\n.form-group input[type=text],\n.form-group input[type=password],\n.form-group input[type=file] {\n  padding: 10px;\n  border: 1px solid #c0ccda;\n  color: #687484;\n  font-size: 0.875rem;\n  border-radius: 2px;\n  display: block;\n  background: #fff;\n  width: calc(100% - 20px);\n}\n.form-group select {\n  padding: 10px;\n  border: 1px solid #c0ccda;\n  color: #687484;\n  font-size: 0.875rem;\n  border-radius: 2px;\n  display: block;\n  background: #fff;\n  width: calc(100% - 20px);\n  width: 100%;\n}\n.profile-img {\n  margin: auto;\n  text-align: center;\n  border-radius: 50%;\n  height: 120px;\n  width: 120px;\n  position: relative;\n}\n.profile-img img {\n  width: 120px;\n  height: 120px;\n  margin: auto;\n  border-radius: 50%;\n}\n.photo-edit,\n.photo-camera {\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  background: #3c4858;\n  position: absolute;\n  bottom: 0px;\n  right: 0px;\n  overflow: hidden;\n}\n.photo-edit:not(.photo-edit),\n.photo-camera:not(.photo-edit) {\n  left: 0;\n}\n.photo-edit input,\n.photo-camera input {\n  opacity: 0;\n  padding: 10px;\n}\n.photo-edit .fa-camera,\n.photo-camera .fa-camera {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  font-size: 20px;\n  color: #fff;\n}\n.previewComponent {\n  position: relative;\n}\n.previewComponent .banner-img {\n  padding: 10px;\n  border: 1px dashed #c0ccda;\n  width: calc(100% - 22px);\n  margin-bottom: 10px;\n}\n.previewComponent .banner-img img {\n  max-width: 100%;\n}\n.uploadImgBtn,\n.uploadImgBtn:hover {\n  background: #38bc91;\n  border: none;\n  color: #fff;\n  margin: auto;\n  display: inline-block !important;\n  padding: 5px 15px;\n  text-decoration: none;\n}\n.cancelImgBtn,\n.cancelImgBtn:hover {\n  background: #ff1616;\n  border: none;\n  color: #fff;\n  margin: auto;\n  display: inline-block !important;\n  padding: 5px 15px;\n  text-decoration: none;\n}\n.text-ellipsis {\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.width-150 {\n  width: 150px !important;\n}\n/* Safari 4.0 - 8.0 */\n@-webkit-keyframes sideContentOpen {\n  from {\n    right: -100%;\n  }\n  to {\n    right: 0px;\n  }\n}\n/* Standard syntax */\n@keyframes sideContentOpen {\n  from {\n    right: -100%;\n  }\n  to {\n    right: 0px;\n  }\n}\n/* Safari 4.0 - 8.0 */\n@-webkit-keyframes sideContentHide {\n  from {\n    right: 0px;\n  }\n  to {\n    right: -100%;\n  }\n}\n/* Standard syntax */\n@keyframes sideContentHide {\n  from {\n    right: 0px;\n  }\n  to {\n    right: -100%;\n  }\n}\n.side-preview-content {\n  position: fixed;\n  width: 75%;\n  height: 100%;\n  z-index: 999;\n  top: 0;\n  background: rgba(0, 0, 0, 0.8);\n  color: #f9fafc;\n}\n.side-preview-content.side-preview-content-open {\n  -webkit-animation: sideContentOpen 0.5s;\n  /* Safari 4.0 - 8.0 */\n  animation: sideContentOpen 0.5s;\n  right: 0px;\n}\n.side-preview-content.side-preview-content-hide {\n  -webkit-animation: sideContentHide 0.5s;\n  /* Safari 4.0 - 8.0 */\n  animation: sideContentHide 0.5s;\n  right: -100%;\n}\n.side-preview-content .content-container {\n  height: calc(90% - 15px);\n  margin-top: 45px;\n  overflow: auto;\n}\n.side-preview-content .content-container ul {\n  padding: 0;\n  margin: 0;\n  list-style: none;\n}\n.side-preview-content .content-container ul li {\n  padding: 5px 5px 5px 10px;\n  border-bottom: 1px solid #ccc;\n  text-align: left;\n  word-break: break-all;\n}\n.side-preview-content .hide-preview {\n  right: 10px;\n  position: absolute;\n  top: 10px;\n  color: #f9fafc;\n}\n.preview-iframeBox {\n  width: 100%;\n  height: 400px;\n  border: 1px solid #c0ccda;\n}\n.not_found_message {\n  font-size: 16px;\n  margin: 20px;\n  font-weight: 600;\n  color: #ff1616;\n}\n.text-error {\n  color: #e71e1e;\n}\n#takePhotoByCamera {\n  display: none;\n  position: fixed;\n  height: 100%;\n  left: 0;\n  right: 0;\n  top: 0;\n  border: 5px solid #873895;\n  flex-direction: column;\n  z-index: 999;\n  background: rgba(0, 0, 0, 0.8);\n}\n#takePhotoByCamera.cameraOn {\n  display: flex;\n}\n#takePhotoByCamera #capturedImage {\n  position: absolute;\n  display: none;\n  left: -50%;\n  top: 50%;\n  width: 100%;\n  transform: translate(50%, -50%);\n}\n#takePhotoByCamera #capturedImage.imageOn {\n  display: block;\n}\n#takePhotoByCamera .stop_photo_button {\n  position: absolute;\n  bottom: 2rem;\n  right: 1rem;\n  z-index: 9;\n}\n#takePhotoByCamera .take_photo_button {\n  position: absolute;\n  bottom: 2rem;\n  left: 1rem;\n  z-index: 9;\n}\n#takePhotoByCamera video {\n  width: 100%;\n  height: 100%;\n}\n#takePhotoByCamera video.videoOff {\n  display: none;\n}\n.camerOnButton {\n  width: 40px;\n  height: 40px;\n  background: none;\n  border: none;\n  position: absolute;\n  z-index: 9;\n  left: 0;\n}\n.ReactTags__selected .ReactTags__tag {\n  display: block;\n  padding: 10px;\n  background: #e2e2e2;\n  border: 1px solid #cccc;\n  border-radius: 3px;\n  margin-bottom: 0.5rem;\n  position: relative;\n}\n.ReactTags__selected .ReactTags__tag a {\n  padding: 10px;\n  position: absolute;\n  right: 0;\n  top: 0;\n  font-size: 2rem;\n}\n", ""]);
+	exports.push([module.id, ".pos-rel {\n  position: relative;\n}\n.pos-fix {\n  position: fixed;\n}\n.pos-abs {\n  position: absolute;\n}\n.dis-block {\n  display: block;\n}\n.dis-inline-block {\n  display: inline-block;\n}\n.dis-inline {\n  display: inline;\n}\n.dis-none {\n  display: none;\n}\n.text-xxlg {\n  font-size: 2.813rem;\n}\n.text-xlg {\n  font-size: 2.125rem;\n}\n.text-lg {\n  font-size: 1.5rem;\n}\n.text-md {\n  font-size: 1.25rem;\n}\n.text-rg {\n  font-size: 1rem;\n}\n.text-sm {\n  font-size: 0.875rem;\n}\n.text-xs {\n  font-size: 0.75rem;\n}\n.text-decoration-underline {\n  text-decoration: underline;\n}\n.text-decoration-none {\n  text-decoration: none;\n}\n.text-black {\n  color: #3c4858;\n}\n.text-silver {\n  color: #687484;\n}\n.text-steel {\n  color: #8492a6;\n}\n.text-slate {\n  color: #c0ccda;\n}\n.text-smoke {\n  color: #eff2f7;\n}\n.text-snow {\n  color: #f9fafc;\n}\n.text-success {\n  color: #75b654;\n}\n.text-error {\n  color: #e71e1e;\n}\n.text-info {\n  color: #1ea1e7;\n}\n.text-center {\n  text-align: center;\n}\n.text-left {\n  text-align: left;\n}\n.text-right {\n  text-align: right;\n}\n.m-t-0 {\n  margin-top: 0px;\n}\n.m-l-0 {\n  margin-left: 0px;\n}\n.m-r-0 {\n  margin-right: 0px;\n}\n.m-b-0 {\n  margin-bottom: 0px;\n}\n.p-t-0 {\n  padding-top: 0px;\n}\n.p-l-0 {\n  padding-left: 0px;\n}\n.p-r-0 {\n  padding-right: 0px;\n}\n.p-b-0 {\n  padding-bottom: 0px;\n}\n.m-t-xxs {\n  margin-top: 5px;\n}\n.m-t-xs {\n  margin-top: 10px;\n}\n.m-t-sm {\n  margin-top: 15px;\n}\n.m-t-rg {\n  margin-top: 20px;\n}\n.m-t-md {\n  margin-top: 25px;\n}\n.m-t-lg {\n  margin-top: 30px;\n}\n.m-t-xlg {\n  margin-top: 35px;\n}\n.m-t-xxlg {\n  margin-top: 40px;\n}\n.m-b-xxs {\n  margin-bottom: 5px;\n}\n.m-b-xs {\n  margin-bottom: 10px;\n}\n.m-b-sm {\n  margin-bottom: 15px;\n}\n.m-b-rg {\n  margin-bottom: 20px;\n}\n.m-b-md {\n  margin-bottom: 25px;\n}\n.m-b-lg {\n  margin-bottom: 30px;\n}\n.m-b-xlg {\n  margin-bottom: 35px;\n}\n.m-b-xxlg {\n  margin-bottom: 40px;\n}\n.m-l-xxs {\n  margin-left: 5px;\n}\n.m-l-xs {\n  margin-left: 10px;\n}\n.m-l-sm {\n  margin-left: 15px;\n}\n.m-l-rg {\n  margin-left: 20px;\n}\n.m-l-md {\n  margin-left: 25px;\n}\n.m-l-lg {\n  margin-left: 30px;\n}\n.m-l-xlg {\n  margin-left: 35px;\n}\n.m-l-xxlg {\n  margin-left: 40px;\n}\n.m-r-xxs {\n  margin-right: 5px;\n}\n.m-r-xs {\n  margin-right: 10px;\n}\n.m-r-sm {\n  margin-right: 15px;\n}\n.m-r-rg {\n  margin-right: 20px;\n}\n.m-r-md {\n  margin-right: 25px;\n}\n.m-r-lg {\n  margin-right: 30px;\n}\n.m-r-xlg {\n  margin-right: 35px;\n}\n.m-r-xxlg {\n  margin-right: 40px;\n}\n.p-t-xxs {\n  padding-top: 5px;\n}\n.p-t-xs {\n  padding-top: 10px;\n}\n.p-t-sm {\n  padding-top: 15px;\n}\n.p-t-rg {\n  padding-top: 20px;\n}\n.p-t-md {\n  padding-top: 25px;\n}\n.p-t-lg {\n  padding-top: 30px;\n}\n.p-t-xlg {\n  padding-top: 35px;\n}\n.p-t-xxlg {\n  padding-top: 40px;\n}\n.p-b-xxs {\n  padding-bottom: 5px;\n}\n.p-b-xs {\n  padding-bottom: 10px;\n}\n.p-b-sm {\n  padding-bottom: 15px;\n}\n.p-b-rg {\n  padding-bottom: 20px;\n}\n.p-b-md {\n  padding-bottom: 25px;\n}\n.p-b-lg {\n  padding-bottom: 30px;\n}\n.p-b-xlg {\n  padding-bottom: 35px;\n}\n.p-b-xxlg {\n  padding-bottom: 40px;\n}\n.p-l-xxs {\n  padding-left: 5px;\n}\n.p-l-xs {\n  padding-left: 10px;\n}\n.p-l-sm {\n  padding-left: 15px;\n}\n.p-l-rg {\n  padding-left: 20px;\n}\n.p-l-md {\n  padding-left: 25px;\n}\n.p-l-lg {\n  padding-left: 30px;\n}\n.p-l-xlg {\n  padding-left: 35px;\n}\n.p-l-xxlg {\n  padding-left: 40px;\n}\n.p-r-xxs {\n  padding-right: 5px;\n}\n.p-r-xs {\n  padding-right: 10px;\n}\n.p-r-sm {\n  padding-right: 15px;\n}\n.p-r-rg {\n  padding-right: 20px;\n}\n.p-r-md {\n  padding-right: 25px;\n}\n.p-r-lg {\n  padding-right: 30px;\n}\n.p-r-xlg {\n  padding-right: 35px;\n}\n.p-r-xxlg {\n  padding-right: 40px;\n}\n.show {\n  display: block !important;\n}\n.hide {\n  display: none !important;\n}\n.width-100 {\n  width: 100% !important;\n}\n.width-100px {\n  width: 100px !important;\n}\n.overflow-hidden {\n  overflow: hidden;\n}\n.overflow-auto {\n  overflow: auto;\n}\n.clearfix {\n  width: 100%;\n  clear: both;\n}\n.panel {\n  padding: 15px;\n}\n.panel .panel-body {\n  padding: 0 15px 30px;\n}\n.panel .panel-row {\n  box-shadow: 0px 0px 3px #c0ccda;\n}\n.panel .panel-row .row-item {\n  position: relative;\n  background: #fff;\n  padding: 0.5rem 0.8rem;\n  border-left: 1px solid #c0ccda;\n  border-right: 1px solid #c0ccda;\n  color: #687484;\n}\n.panel .panel-row .row-item:not(:first-child),\n.panel .panel-row .row-item:not(:last-child) {\n  border-radius: 0;\n  border-top: none;\n  border-bottom: none;\n}\n.panel .panel-row .row-item:first-child {\n  border-bottom: 1px solid #c0ccda;\n  border-top: 1px solid #c0ccda;\n}\n.panel .panel-row .row-item:last-child {\n  border-bottom: 1px solid #c0ccda;\n  border-top: 1px solid #c0ccda;\n}\n.panel .panel-row .row-item .label {\n  display: inline-block;\n}\n.panel .panel-row .row-item .label-value {\n  display: inline-block;\n}\n.panel .panel-row .row-item .counts {\n  margin: 10px 10px 10px 28px;\n  font-size: 42px;\n}\n.panel .panel-row .row-item .goto-link {\n  position: absolute;\n  top: 50%;\n  margin-top: -1em;\n  right: 0px;\n  cursor: pointer;\n}\n.form-control {\n  padding: 10px;\n  border: 1px solid #c0ccda;\n  color: #687484;\n  font-size: 0.875rem;\n  border-radius: 2px;\n  display: block;\n  background: #fff;\n  width: calc(100% - 20px);\n}\n.btn {\n  padding: 10px 15px;\n  border: 1px solid;\n  background: none;\n  border-radius: 2px;\n  font-size: 0.875rem;\n  transition: ease-in 0.5s;\n  text-decoration: none;\n  text-align: center;\n  transition: ease-in-out 0.5s;\n}\n.btn-block {\n  width: calc(100% + 2px);\n  display: block;\n  box-sizing: border-box;\n}\n.btn-sm {\n  padding: 5px 10px;\n  box-sizing: border-box;\n}\n.btn-default {\n  background: #eff2f7;\n  color: #687484;\n  border-color: #c0ccda;\n}\n.btn-default:hover {\n  background: #cdd6e6;\n  border-color: transparent;\n}\n.btn-login {\n  background: #30b7e6;\n  color: #fff;\n  border-color: #3ba1c3;\n}\n.btn-login:hover {\n  background: #138fb9;\n}\n.btn-success {\n  background: #75b654;\n  color: #f9fafc;\n  border-color: transparent;\n}\n.btn-success:hover {\n  background: #314f22;\n  border-color: transparent;\n}\n.btn-danger {\n  background: #e71e1e;\n  color: #f9fafc;\n  border-color: transparent;\n}\n.btn-danger:hover {\n  background: #620a0a;\n  border-color: transparent;\n}\n.btn-purple-o {\n  border-radius: 30px;\n  background: #c52fda;\n  color: #fff;\n  border: none;\n}\n.btn-purple-o:hover {\n  background: #b027c4;\n}\n.btn-dark-o {\n  border-radius: 30px;\n  background: #333;\n  color: #fff;\n  border: none;\n}\n.btn-dark-o:hover {\n  background: #000;\n}\n.btn-ghost-o {\n  border-radius: 30px;\n  background: #fff;\n  color: #333;\n  border: none;\n}\n.btn-ghost-o:hover {\n  background: #f8f8f8;\n}\n.btn:disabled {\n  background: #f9fafc !important;\n  color: #c0ccda !important;\n  border: 1px solid #eff2f7;\n}\n.anchor-link {\n  text-decoration: underline;\n  color: #1ea1e7;\n}\n.anchor-link:hover {\n  text-decoration: none;\n}\n.btn-group .btn + .btn {\n  margin-left: -1px;\n}\n.btn-group .btn:not(:first-child),\n.btn-group .btn:not(:last-child) {\n  border-radius: 0;\n}\n.btn-group .btn:last-child {\n  border-radius: 0 2px 2px 0;\n}\n.btn-group .btn:first-child {\n  border-radius: 2px 0 0 2px;\n}\n.action-btn .btn {\n  padding: 7px 12px;\n  background: #f9fafc;\n  border-color: #c0ccda;\n}\n.action-btn .btn + .btn {\n  margin-left: -1px;\n}\n.action-btn .btn:not(:first-child),\n.action-btn .btn:not(:last-child) {\n  border-radius: 0;\n}\n.action-btn .btn:last-child {\n  border-radius: 0 2px 2px 0;\n}\n.action-btn .btn:first-child {\n  border-radius: 2px 0 0 2px;\n}\n.list-table {\n  background: #eff2f7;\n  border-radius: 2px;\n  border: 1px solid #c0ccda;\n}\n.list-table ul {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.list-table ul li {\n  border-bottom: 1px solid #c0ccda;\n  padding: 10px 5px;\n}\n.text-black .list-table ul li:last-child {\n  border-bottom: none;\n}\n.list-table ul li a,\n.list-table ul li a:hover {\n  text-decoration: none;\n  color: #687484;\n}\n.form-group .list-table label {\n  padding-bottom: 0;\n  color: #687484;\n}\nul.unstyle {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\nul.unstyle li {\n  border-bottom: 1px solid #c0ccda;\n  padding: 10px 5px;\n}\n.text-black ul.unstyle li:last-child {\n  border-bottom: none;\n}\nul.unstyle li a,\nul.unstyle li a:hover {\n  text-decoration: none;\n  color: #687484;\n}\n.group-anchor a,\n.group-anchor a:hover {\n  color: #1ea1e7;\n  text-decoration: underline;\n  position: relative;\n  margin: auto;\n}\n.group-anchor a:not(:first-child) {\n  margin-left: 15px;\n}\n.group-anchor a:not(:first-child)::after {\n  content: \"-\";\n  position: absolute;\n  top: 0;\n  left: -10px;\n}\n.modal {\n  position: fixed;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n}\n.modal .modal-dialog {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  background: #f9fafc;\n  padding: 20px;\n  color: #f9fafc;\n  border-radius: 3px;\n  border: 1px solid #eff2f7;\n  z-index: 99999;\n}\n.modal .modal-header {\n  position: relative;\n  padding: 10px 0 20px;\n}\n.modal .modal-header .modal-title {\n  font-size: 1rem;\n  padding: 0;\n  margin: 0;\n  color: #687484;\n}\n.modal .modal-header .close-modal {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  width: 30px;\n  height: 30px;\n  border: none;\n  background: none;\n  cursor: pointer;\n}\n.modal .modal-header .close-modal:after {\n  content: \"\\F00D\";\n  position: absolute;\n  top: 5px;\n  right: 5px;\n  font-family: \"fontAwesome\";\n  font-size: 1.5rem;\n}\n.modal .modal-body {\n  max-height: 300px;\n  overflow: auto;\n}\n.modal .modal-body .modal-message {\n  font-size: 0.875rem;\n}\n.help-text {\n  font-size: 0.75rem;\n  padding: 5px 0;\n  display: block;\n}\n.help-text-error {\n  color: #e71e1e;\n}\n.checkbox-dropdown .checkbox-container {\n  background: #fff;\n  max-height: 200px;\n  overflow: auto;\n}\n.checkbox-dropdown label {\n  display: block;\n}\n.alert {\n  padding: 5px 10px;\n  border-radius: 3px;\n}\n.alert-success {\n  background: #e7faf0;\n  border: 1px solid #13ce66;\n  color: #13ce66;\n}\n.alert-info {\n  background: #e9f8ff;\n  border: 1px solid #1fb6ff;\n  color: #1fb6ff;\n}\n.alert-error {\n  background: #ffeded;\n  border: 1px solid #ff4949;\n  color: #ff4949;\n}\n.alert-warning {\n  background: #fff5eb;\n  border: 1px solid #f93;\n  color: #f93;\n}\n@-webkit-keyframes fadeOut {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n    height: 0;\n  }\n}\n@keyframes fadeOut {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0;\n    height: 0;\n  }\n}\n.alert-fade-out {\n  -webkit-animation-name: fadeOut;\n  animation-name: fadeOut;\n  -webkit-animation-duration: 2s;\n  animation-duration: 2s;\n  -webkit-animation-fill-mode: both;\n  animation-fill-mode: both;\n}\n.table {\n  border-collapse: collapse;\n}\n.table td {\n  padding: 5px;\n  border-bottom: 1px solid #687484;\n}\n.form-box ul {\n  padding: 0;\n  margin: 0;\n  list-style: none;\n}\n.form-box ul li {\n  margin-bottom: 10px;\n}\n.form-box .form-control,\n.form-box .form-control:focus {\n  padding-left: 10px;\n  border: none;\n  outline: none !important;\n  border: 1px solid #c0ccda;\n}\n.hint-text {\n  font-size: 12px;\n}\n@font-face {\n  font-family: 'Montserrat';\n  font-style: normal;\n  font-weight: 400;\n  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(http://fonts.gstatic.com/s/montserrat/v14/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf) format('truetype');\n}\n@font-face {\n  font-family: 'Montserrat';\n  font-style: normal;\n  font-weight: 700;\n  src: local('Montserrat Bold'), local('Montserrat-Bold'), url(http://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gnD-w.ttf) format('truetype');\n}\nhtml {\n  min-height: 100%;\n}\nbody {\n  background-color: #fefefe;\n  font-family: Montserrat, sans-serif;\n  color: #3c4858;\n  line-height: 20px;\n  font-size: 14px;\n  margin: 0;\n}\n.header {\n  position: fixed;\n  background: #f9fafc;\n  height: 50px;\n  width: 100%;\n  z-index: 9;\n  box-shadow: -1px 1px 4px #e2e2e2;\n  top: 0;\n}\n.content-section {\n  padding-top: 50px;\n  max-width: 650px;\n  margin: auto;\n}\n/* Safari 4.0 - 8.0 */\n@-webkit-keyframes menuOpen {\n  from {\n    left: -110%;\n  }\n  to {\n    left: 0px;\n  }\n}\n/* Standard syntax */\n@keyframes menuOpen {\n  from {\n    left: -110%;\n  }\n  to {\n    left: 0px;\n  }\n}\n/* Safari 4.0 - 8.0 */\n@-webkit-keyframes menuHide {\n  from {\n    left: 0px;\n  }\n  to {\n    left: -110%;\n  }\n}\n/* Standard syntax */\n@keyframes menuHide {\n  from {\n    left: 0px;\n  }\n  to {\n    left: -110%;\n  }\n}\n.menu-opener {\n  position: absolute;\n  left: 15px;\n  top: 10px;\n  color: #3c4858;\n  z-index: 100;\n}\n.menu-opener.menu-opener-active {\n  color: #f9fafc;\n}\n.side-menu {\n  background: #873895;\n  position: fixed;\n  z-index: 99;\n  width: 225px;\n  height: 100%;\n  top: 0px;\n  box-shadow: 2px 0 10px #666;\n}\n.side-menu.side-menu-open {\n  -webkit-animation: menuOpen 0.5s;\n  /* Safari 4.0 - 8.0 */\n  animation: menuOpen 0.5s;\n  left: 0px;\n}\n.side-menu.side-menu-hide {\n  -webkit-animation: menuHide 0.5s;\n  /* Safari 4.0 - 8.0 */\n  animation: menuHide 0.5s;\n  left: -110%;\n}\n.side-menu ul {\n  width: 100%;\n  list-style: none;\n  padding: 0;\n  margin-top: 2rem;\n}\n.side-menu ul li {\n  width: calc(100% - 2rem);\n  border-bottom: 1px solid #f8f8f8;\n  padding: 0.5rem 1rem;\n}\n.side-menu ul li a {\n  display: block;\n  color: #f9fafc;\n  padding: 8px 0;\n  text-decoration: none;\n}\n.side-menu ul li.divider {\n  border-bottom: 1px solid #eff2f7;\n  margin: 10px 0;\n}\n.form-group {\n  position: relative;\n  margin: 0 auto 20px;\n}\n.form-group label {\n  margin-bottom: 0;\n  color: #687484;\n  font-size: 0.75rem;\n  line-height: 11px;\n  letter-spacing: 1px;\n  padding-bottom: 10px;\n  display: block;\n}\n.form-group input[type=text],\n.form-group input[type=password],\n.form-group input[type=file] {\n  padding: 10px;\n  border: 1px solid #c0ccda;\n  color: #687484;\n  font-size: 0.875rem;\n  border-radius: 2px;\n  display: block;\n  background: #fff;\n  width: calc(100% - 20px);\n}\n.form-group select {\n  padding: 10px;\n  border: 1px solid #c0ccda;\n  color: #687484;\n  font-size: 0.875rem;\n  border-radius: 2px;\n  display: block;\n  background: #fff;\n  width: calc(100% - 20px);\n  width: 100%;\n}\n.profile-img {\n  margin: auto;\n  text-align: center;\n  border-radius: 50%;\n  height: 120px;\n  width: 120px;\n  position: relative;\n}\n.profile-img img {\n  width: 120px;\n  height: 120px;\n  margin: auto;\n  border-radius: 50%;\n}\n.photo-edit,\n.photo-camera {\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  background: #3c4858;\n  position: absolute;\n  bottom: 0px;\n  right: 0px;\n  overflow: hidden;\n}\n.photo-edit:not(.photo-edit),\n.photo-camera:not(.photo-edit) {\n  left: 0;\n}\n.photo-edit input,\n.photo-camera input {\n  opacity: 0;\n  padding: 10px;\n}\n.photo-edit .fa-camera,\n.photo-camera .fa-camera {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  font-size: 20px;\n  color: #fff;\n}\n.previewComponent {\n  position: relative;\n}\n.previewComponent .banner-img {\n  padding: 10px;\n  border: 1px dashed #c0ccda;\n  width: calc(100% - 22px);\n  margin-bottom: 10px;\n}\n.previewComponent .banner-img img {\n  max-width: 100%;\n}\n.uploadImgBtn,\n.uploadImgBtn:hover {\n  background: #38bc91;\n  border: none;\n  color: #fff;\n  margin: auto;\n  display: inline-block !important;\n  padding: 5px 15px;\n  text-decoration: none;\n}\n.cancelImgBtn,\n.cancelImgBtn:hover {\n  background: #ff1616;\n  border: none;\n  color: #fff;\n  margin: auto;\n  display: inline-block !important;\n  padding: 5px 15px;\n  text-decoration: none;\n}\n.text-ellipsis {\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.width-150 {\n  width: 150px !important;\n}\n/* Safari 4.0 - 8.0 */\n@-webkit-keyframes sideContentOpen {\n  from {\n    right: -100%;\n  }\n  to {\n    right: 0px;\n  }\n}\n/* Standard syntax */\n@keyframes sideContentOpen {\n  from {\n    right: -100%;\n  }\n  to {\n    right: 0px;\n  }\n}\n/* Safari 4.0 - 8.0 */\n@-webkit-keyframes sideContentHide {\n  from {\n    right: 0px;\n  }\n  to {\n    right: -100%;\n  }\n}\n/* Standard syntax */\n@keyframes sideContentHide {\n  from {\n    right: 0px;\n  }\n  to {\n    right: -100%;\n  }\n}\n.side-preview-content {\n  position: fixed;\n  width: 75%;\n  height: 100%;\n  z-index: 999;\n  top: 0;\n  background: rgba(0, 0, 0, 0.8);\n  color: #f9fafc;\n}\n.side-preview-content.side-preview-content-open {\n  -webkit-animation: sideContentOpen 0.5s;\n  /* Safari 4.0 - 8.0 */\n  animation: sideContentOpen 0.5s;\n  right: 0px;\n}\n.side-preview-content.side-preview-content-hide {\n  -webkit-animation: sideContentHide 0.5s;\n  /* Safari 4.0 - 8.0 */\n  animation: sideContentHide 0.5s;\n  right: -100%;\n}\n.side-preview-content .content-container {\n  height: calc(90% - 15px);\n  margin-top: 45px;\n  overflow: auto;\n}\n.side-preview-content .content-container ul {\n  padding: 0;\n  margin: 0;\n  list-style: none;\n}\n.side-preview-content .content-container ul li {\n  padding: 5px 5px 5px 10px;\n  border-bottom: 1px solid #ccc;\n  text-align: left;\n  word-break: break-all;\n}\n.side-preview-content .hide-preview {\n  right: 10px;\n  position: absolute;\n  top: 10px;\n  color: #f9fafc;\n}\n.preview-iframeBox {\n  width: 100%;\n  height: 400px;\n  border: 1px solid #c0ccda;\n}\n.not_found_message {\n  font-size: 16px;\n  margin: 20px;\n  font-weight: 600;\n  color: #ff1616;\n}\n.text-error {\n  color: #e71e1e;\n}\n#takePhotoByCamera {\n  display: none;\n  position: fixed;\n  height: 100%;\n  left: 0;\n  right: 0;\n  top: 0;\n  border: 5px solid #873895;\n  flex-direction: column;\n  z-index: 999;\n  background: rgba(0, 0, 0, 0.8);\n}\n#takePhotoByCamera.cameraOn {\n  display: flex;\n}\n#takePhotoByCamera #capturedImage {\n  position: absolute;\n  display: none;\n  left: -50%;\n  top: 50%;\n  width: 100%;\n  transform: translate(50%, -50%);\n}\n#takePhotoByCamera #capturedImage.imageOn {\n  display: block;\n}\n#takePhotoByCamera .stop_photo_button {\n  position: absolute;\n  bottom: 2rem;\n  right: 1rem;\n  z-index: 9;\n}\n#takePhotoByCamera .take_photo_button {\n  position: absolute;\n  bottom: 2rem;\n  left: 1rem;\n  z-index: 9;\n}\n#takePhotoByCamera video {\n  width: 100%;\n  height: 100%;\n}\n#takePhotoByCamera video.videoOff {\n  display: none;\n}\n.camerOnButton {\n  width: 40px;\n  height: 40px;\n  background: none;\n  border: none;\n  position: absolute;\n  z-index: 9;\n  left: 0;\n}\n.ReactTags__selected .ReactTags__tag {\n  display: block;\n  padding: 10px;\n  background: #e2e2e2;\n  border: 1px solid #cccc;\n  border-radius: 3px;\n  margin-bottom: 0.5rem;\n  position: relative;\n}\n.ReactTags__selected .ReactTags__tag a {\n  padding: 10px;\n  position: absolute;\n  right: 0;\n  top: 0;\n  font-size: 2rem;\n}\n", ""]);
 
 	// exports
 
